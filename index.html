@@ -208,6 +208,31 @@
         overflow: hidden;
       }
 
+      /* ensure project cards match image width and remain responsive */
+      .project-card {
+        width: 100%;
+        max-width: 1500px; /* prevents overly wide cards on very large screens */
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .project-card .card-img-top {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* ensure row wraps and shows up to 3 columns on large screens */
+      @media (min-width: 992px) {
+        /* lg */
+        .row.g-4 {
+          justify-content: center;
+        }
+        .col-lg-4 {
+          flex: 0 0 auto;
+        }
+      }
+
       .project-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
@@ -268,14 +293,16 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.85);
+        background: rgba(0, 0, 0, 0.85);
         display: none;
         align-items: center;
         justify-content: center;
         z-index: 2000;
         padding: 2rem;
       }
-      .lightbox-overlay.open { display: flex; }
+      .lightbox-overlay.open {
+        display: flex;
+      }
       .lightbox-content {
         max-width: 1200px;
         width: 100%;
@@ -385,81 +412,34 @@
     <section id="projects" class="section hidden">
       <div class="container">
         <h2 class="section-title">Projects</h2>
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
           <div class="col-md-6 col-lg-4 hidden delay-100">
             <div class="card project-card h-100">
               <img
                 src="assets/images/MindWellGarden.png"
-                class="card-img-top"
+                class="card-img-top project-image"
                 alt="MindWellGarden project screenshot"
               />
               <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Project Title 1</h5>
+                <h5 class="card-title">Mind Well Garden</h5>
                 <p class="card-text text-secondary flex-grow-1">
-                  A brief but compelling description of your project. Explain
-                  what it does and the problem it solves.
+                  MindWell Garden is a gamified mental wellness platform
+                  designed to help users proactively manage their well-being by
+                  tracking their mood and completing daily challenges. It
+                  motivates consistent engagement through points, streaks, and
+                  achievements, offering a structured way to build healthy
+                  habits like journaling and meditation. The application also
+                  provides prominent and easy access to crucial crisis support
+                  and emergency contacts for immediate help.
                 </p>
                 <div class="technologies mb-3">
                   <span>Django</span><span>React</span><span>MySQL</span>
-                      <img
-                        src="assets/images/MindWellGarden.png"
-                        class="card-img-top project-image"
-                        alt="MindWellGarden project screenshot"
-                      />
-                    ><i class="fab fa-github"></i
-                  ></a>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-4 hidden delay-200">
-            <div class="card project-card h-100">
-              <img
-                src="https://github.com/IRehanKhanI/Resume1/blob/main/MindWellGarden.png"
-                class="card-img-top"
-                alt="Project 2"
-              />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Project Title 2</h5>
-                <p class="card-text text-secondary flex-grow-1">
-                  Mention any unique features or challenges you overcame during
-                  its development.
-                </p>
-                <div class="technologies mb-3">
-                  <span>Python</span><span>Django</span><span>SQLite</span>
-                      <img
-                        src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
-                        class="card-img-top project-image"
-                        alt="Project 2"
-                      />
-                    ><i class="fab fa-github"></i
+                <div class="project-links text-center mt-auto">
+                  <a href="#" target="_blank" title="Live Demo" class="mx-auto"
+                    ><i class="fas fa-globe"></i
                   ></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-4 hidden delay-300">
-            <div class="card project-card h-100">
-              <img
-                src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
-                class="card-img-top"
-                alt="Project 3"
-              />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Project Title 3</h5>
-                <p class="card-text text-secondary flex-grow-1">
-                  Maybe this one is a front-end focused project using React, or
-                  a complex back-end API.
-                </p>
-                <div class="technologies mb-3">
-                  <span>React</span><span>Bootstrap</span><span>API</span>
-                      <img
-                        src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
-                        class="card-img-top project-image"
-                        alt="Project 3"
-                      />
+                  <a href="#" target="_blank" title="Source Code"
                     ><i class="fab fa-github"></i
                   ></a>
                 </div>
@@ -635,16 +615,28 @@
       }
       animate();
     </script>
-    <div id="lightboxOverlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Image preview">
-      <button class="lightbox-close" id="lightboxClose" aria-label="Close preview">&times;</button>
+    <div
+      id="lightboxOverlay"
+      class="lightbox-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
+    >
+      <button
+        class="lightbox-close"
+        id="lightboxClose"
+        aria-label="Close preview"
+      >
+        &times;
+      </button>
       <div class="lightbox-content" id="lightboxContent"></div>
     </div>
 
     <script>
-      (function(){
-        const overlay = document.getElementById('lightboxOverlay');
-        const content = document.getElementById('lightboxContent');
-        const closeBtn = document.getElementById('lightboxClose');
+      (function () {
+        const overlay = document.getElementById("lightboxOverlay");
+        const content = document.getElementById("lightboxContent");
+        const closeBtn = document.getElementById("lightboxClose");
         let currentImage = null;
         let originalParent = null;
         let originalNextSibling = null;
@@ -656,36 +648,37 @@
           currentImage = img;
 
           // style and move
-          img.style.width = '100%';
-          img.style.height = 'auto';
-          img.style.cursor = 'zoom-out';
+          img.style.width = "100%";
+          img.style.height = "auto";
+          img.style.cursor = "zoom-out";
           content.appendChild(img);
-          overlay.classList.add('open');
-          document.body.style.overflow = 'hidden';
+          overlay.classList.add("open");
+          document.body.style.overflow = "hidden";
         }
 
         function closeLightbox() {
           if (!currentImage) return;
           // restore image to original place
-          if (originalNextSibling) originalParent.insertBefore(currentImage, originalNextSibling);
+          if (originalNextSibling)
+            originalParent.insertBefore(currentImage, originalNextSibling);
           else originalParent.appendChild(currentImage);
 
           // cleanup styles
-          currentImage.style.cursor = '';
-          currentImage.style.width = '';
-          currentImage.style.height = '';
+          currentImage.style.cursor = "";
+          currentImage.style.width = "";
+          currentImage.style.height = "";
 
           currentImage = null;
           originalParent = null;
           originalNextSibling = null;
 
-          overlay.classList.remove('open');
-          document.body.style.overflow = '';
+          overlay.classList.remove("open");
+          document.body.style.overflow = "";
         }
 
-        document.querySelectorAll('.project-image').forEach(img => {
-          img.style.cursor = 'zoom-in';
-          img.addEventListener('click', () => {
+        document.querySelectorAll(".project-image").forEach((img) => {
+          img.style.cursor = "zoom-in";
+          img.addEventListener("click", () => {
             // If image is already in lightbox, close it
             if (currentImage === img) {
               closeLightbox();
@@ -695,12 +688,12 @@
           });
         });
 
-        closeBtn.addEventListener('click', closeLightbox);
-        overlay.addEventListener('click', (e) => {
+        closeBtn.addEventListener("click", closeLightbox);
+        overlay.addEventListener("click", (e) => {
           if (e.target === overlay) closeLightbox();
         });
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') closeLightbox();
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeLightbox();
         });
       })();
     </script>
