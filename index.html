@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rehan Khan | Full-Stack Developer</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary-color-start: #00aaff;
+        --primary-color-end: #aa00ff;
+        --dark-bg: #121212;
+        --secondary-bg: #1e1e1e;
+        --card-bg: #2a2a2a;
+        --text-color: #f0f0f0;
+        --secondary-text-color: #a0a0a0;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--dark-bg);
+        color: var(--text-color);
+      }
+
+      .hidden {
+        opacity: 0;
+        filter: blur(5px);
+        transform: translateY(20px);
+        transition: all 0.7s ease-out;
+      }
+
+      .show {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .navbar {
+        background-color: rgba(30, 30, 30, 0.7);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #333;
+      }
+
+      .delay-100 {
+        transition-delay: 100ms;
+      }
+      .delay-200 {
+        transition-delay: 200ms;
+      }
+      .delay-300 {
+        transition-delay: 300ms;
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+      }
+
+      #home .home-content {
+        z-index: 2;
+        position: relative;
+      }
+
+      #about .about-lead {
+        max-width: 800px;
+        margin: 0 auto;
+        color: var(--secondary-text-color);
+      }
+
+      #skills {
+        background-color: var(--secondary-bg);
+      }
+
+      .contact-email {
+        font-size: 1.5rem;
+        text-decoration: none;
+      }
+
+      .section {
+        padding: 100px 0;
+        overflow: hidden;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+        font-weight: 700;
+        font-size: 2.5rem;
+        color: transparent;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color-start),
+          var(--primary-color-end)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      #home {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      #constellation-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      #home h1 {
+        font-size: 3.8rem;
+        font-weight: 700;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      #home .headline {
+        font-size: 1.5rem;
+        color: var(--secondary-text-color);
+        margin-top: 15px;
+        min-height: 2.2rem;
+      }
+
+      .typed-cursor {
+        color: var(--primary-color-start);
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          90deg,
+          var(--primary-color-start),
+          var(--primary-color-end)
+        );
+        border: none;
+        padding: 14px 28px;
+        font-weight: 600;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeIn 1.5s ease-in-out;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 170, 255, 0.2);
+      }
+
+      .skill-badge {
+        background-color: var(--secondary-bg);
+        color: var(--text-color);
+        padding: 12px 22px;
+        margin: 8px;
+        border-radius: 8px;
+        display: inline-block;
+        font-weight: 500;
+        border: 1px solid #444;
+        transition: all 0.3s ease;
+      }
+      .skill-badge:hover {
+        background: linear-gradient(
+          90deg,
+          var(--primary-color-start),
+          var(--primary-color-end)
+        );
+        color: #fff;
+        transform: scale(1.1);
+        border-color: var(--primary-color-start);
+      }
+
+      .project-card {
+        background-color: var(--card-bg);
+        border: 1px solid #444;
+        border-radius: 12px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        overflow: hidden;
+      }
+
+      .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .project-card .card-title {
+        color: var(--primary-color-start);
+      }
+
+      .project-card .technologies span {
+        font-size: 0.8rem;
+        background-color: #444;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+      }
+
+      .project-links a {
+        color: var(--text-color);
+        margin: 0 10px;
+        font-size: 1.5rem;
+        transition: color 0.3s;
+      }
+
+      .project-links a:hover {
+        color: var(--primary-color-start);
+      }
+
+      #contact .social-icons a {
+        color: var(--secondary-text-color);
+        font-size: 2.8rem;
+        margin: 0 20px;
+        transition: color 0.3s, transform 0.3s;
+      }
+      #contact .social-icons a:hover {
+        color: transparent;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color-start),
+          var(--primary-color-end)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        transform: scale(1.2) rotate(5deg);
+      }
+
+      footer {
+        background-color: var(--secondary-bg);
+        border-top: 1px solid #333;
+      }
+    </style>
+  </head>
+  <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80">
+    <canvas id="constellation-canvas"></canvas>
+
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#home">Rehan Khan</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#skills">Skills</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#projects">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section id="home" class="container-fluid">
+      <div class="container home-content">
+        <h1>Rehan Khan</h1>
+        <p class="headline"><span id="typed-headline"></span></p>
+        <a href="#projects" class="btn btn-primary mt-3">View My Work</a>
+      </div>
+    </section>
+
+    <section id="about" class="section hidden">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <p class="text-center lead about-lead">
+          A results-oriented Full-Stack Developer passionate about building
+          clean, efficient, and user-friendly web applications. With a strong
+          foundation in Python and Django for robust back-end systems and
+          expertise in React for creating dynamic front-end experiences, I enjoy
+          bringing ideas to life from concept to deployment. I am currently
+          seeking opportunities to contribute to challenging projects and
+          collaborate with a forward-thinking team.
+        </p>
+      </div>
+    </section>
+
+    <section id="skills" class="section hidden">
+      <div class="container">
+        <h2 class="section-title">My Tech Stack</h2>
+        <div class="text-center">
+          <div class="hidden delay-100">
+            <span class="skill-badge">Python</span
+            ><span class="skill-badge">JavaScript</span
+            ><span class="skill-badge">HTML5</span
+            ><span class="skill-badge">CSS3</span>
+          </div>
+          <div class="hidden delay-200">
+            <span class="skill-badge">Django</span
+            ><span class="skill-badge">React</span
+            ><span class="skill-badge">Bootstrap</span>
+          </div>
+          <div class="hidden delay-300">
+            <span class="skill-badge">MySQL</span
+            ><span class="skill-badge">SQLite</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section hidden">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4 hidden delay-100">
+            <div class="card project-card h-100">
+              <img
+                src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
+                class="card-img-top"
+                alt="Project 1"
+              />
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Project Title 1</h5>
+                <p class="card-text text-secondary flex-grow-1">
+                  A brief but compelling description of your project. Explain
+                  what it does and the problem it solves.
+                </p>
+                <div class="technologies mb-3">
+                  <span>Django</span><span>React</span><span>MySQL</span>
+                </div>
+                <div class="project-links text-center mt-auto">
+                  <a href="#" target="_blank" title="Live Demo"
+                    ><i class="fas fa-globe"></i></a
+                  ><a href="#" target="_blank" title="Source Code"
+                    ><i class="fab fa-github"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 hidden delay-200">
+            <div class="card project-card h-100">
+              <img
+                src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
+                class="card-img-top"
+                alt="Project 2"
+              />
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Project Title 2</h5>
+                <p class="card-text text-secondary flex-grow-1">
+                  Mention any unique features or challenges you overcame during
+                  its development.
+                </p>
+                <div class="technologies mb-3">
+                  <span>Python</span><span>Django</span><span>SQLite</span>
+                </div>
+                <div class="project-links text-center mt-auto">
+                  <a href="#" target="_blank" title="Live Demo"
+                    ><i class="fas fa-globe"></i></a
+                  ><a href="#" target="_blank" title="Source Code"
+                    ><i class="fab fa-github"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 hidden delay-300">
+            <div class="card project-card h-100">
+              <img
+                src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
+                class="card-img-top"
+                alt="Project 3"
+              />
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Project Title 3</h5>
+                <p class="card-text text-secondary flex-grow-1">
+                  Maybe this one is a front-end focused project using React, or
+                  a complex back-end API.
+                </p>
+                <div class="technologies mb-3">
+                  <span>React</span><span>Bootstrap</span><span>API</span>
+                </div>
+                <div class="project-links text-center mt-auto">
+                  <a href="#" target="_blank" title="Live Demo"
+                    ><i class="fas fa-globe"></i></a
+                  ><a href="#" target="_blank" title="Source Code"
+                    ><i class="fab fa-github"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section text-center hidden">
+      <div class="container">
+        <h2 class="section-title">Get In Touch</h2>
+        <p>
+          I'm currently open to new opportunities. My inbox is always open, feel
+          free to reach out!
+        </p>
+        <p>
+          <a
+            href="mailto:your.email@example.com"
+            class="link-light contact-email"
+            >your.email@example.com</a
+          >
+        </p>
+        <div class="social-icons mt-4">
+          <a href="#" target="_blank" title="LinkedIn" aria-label="LinkedIn"
+            ><i class="fab fa-linkedin"></i
+          ></a>
+          <a href="#" target="_blank" title="GitHub" aria-label="GitHub"
+            ><i class="fab fa-github"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="py-4">
+      <div class="container">
+        <p class="text-center text-secondary m-0">
+          &copy; 2025 Rehan Khan. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <script>
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      });
+      const hiddenElements = document.querySelectorAll(".hidden");
+      hiddenElements.forEach((el) => observer.observe(el));
+
+      var options = {
+        strings: [
+          "Full-Stack Developer",
+          "Python & Django Expert",
+          "React Enthusiast",
+        ],
+        typeSpeed: 50,
+        backSpeed: 25,
+        loop: true,
+        cursorChar: "_",
+      };
+      var typed = new Typed("#typed-headline", options);
+
+      const canvas = document.getElementById("constellation-canvas");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
+      let mouse = { x: null, y: null };
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      canvas.addEventListener("mousemove", (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+      canvas.addEventListener("mouseleave", () => {
+        mouse.x = null;
+        mouse.y = null;
+      });
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 1;
+          this.speedX = Math.random() * 2 - 1;
+          this.speedY = Math.random() * 2 - 1;
+          this.color = getComputedStyle(document.documentElement)
+            .getPropertyValue("--primary-color-start")
+            .trim();
+        }
+        update() {
+          if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+          if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+          this.x += this.speedX;
+          this.y += this.speedY;
+        }
+        draw() {
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function init() {
+        particles = [];
+        let numberOfParticles = (canvas.height * canvas.width) / 9000;
+        for (let i = 0; i < numberOfParticles; i++) {
+          particles.push(new Particle());
+        }
+      }
+      init();
+      window.addEventListener("resize", init);
+
+      function connect() {
+        let opacityValue = 1;
+        for (let a = 0; a < particles.length; a++) {
+          for (let b = a; b < particles.length; b++) {
+            let distance =
+              (particles[a].x - particles[b].x) *
+                (particles[a].x - particles[b].x) +
+              (particles[a].y - particles[b].y) *
+                (particles[a].y - particles[b].y);
+            if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+              opacityValue = 1 - distance / 20000;
+              ctx.strokeStyle = `rgba(0,170,255,${opacityValue})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(particles[a].x, particles[a].y);
+              ctx.lineTo(particles[b].x, particles[b].y);
+              ctx.stroke();
+            }
+          }
+        }
+        if (mouse.x !== null && mouse.y !== null) {
+          for (let i = 0; i < particles.length; i++) {
+            let distance =
+              (particles[i].x - mouse.x) * (particles[i].x - mouse.x) +
+              (particles[i].y - mouse.y) * (particles[i].y - mouse.y);
+            if (distance < (canvas.width / 8) * (canvas.height / 8)) {
+              opacityValue = 1 - distance / 15000;
+              ctx.strokeStyle = `rgba(170,0,255,${opacityValue})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(mouse.x, mouse.y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+        }
+        connect();
+        requestAnimationFrame(animate);
+      }
+      animate();
+    </script>
+  </body>
+</html>
