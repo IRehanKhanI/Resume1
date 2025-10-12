@@ -260,6 +260,43 @@
         background-color: var(--secondary-bg);
         border-top: 1px solid #333;
       }
+
+      /* lightbox modal styles */
+      .lightbox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        padding: 2rem;
+      }
+      .lightbox-overlay.open { display: flex; }
+      .lightbox-content {
+        max-width: 1200px;
+        width: 100%;
+        max-height: 90vh;
+        overflow: auto;
+        border-radius: 8px;
+      }
+      .lightbox-content img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .lightbox-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 2100;
+      }
     </style>
   </head>
   <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80">
@@ -364,11 +401,11 @@
                 </p>
                 <div class="technologies mb-3">
                   <span>Django</span><span>React</span><span>MySQL</span>
-                </div>
-                <div class="project-links text-center mt-auto">
-                  <a href="#" target="_blank" title="Live Demo"
-                    ><i class="fas fa-globe"></i></a
-                  ><a href="#" target="_blank" title="Source Code"
+                      <img
+                        src="assets/images/MindWellGarden.png"
+                        class="card-img-top project-image"
+                        alt="MindWellGarden project screenshot"
+                      />
                     ><i class="fab fa-github"></i
                   ></a>
                 </div>
@@ -391,11 +428,11 @@
                 </p>
                 <div class="technologies mb-3">
                   <span>Python</span><span>Django</span><span>SQLite</span>
-                </div>
-                <div class="project-links text-center mt-auto">
-                  <a href="#" target="_blank" title="Live Demo"
-                    ><i class="fas fa-globe"></i></a
-                  ><a href="#" target="_blank" title="Source Code"
+                      <img
+                        src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
+                        class="card-img-top project-image"
+                        alt="Project 2"
+                      />
                     ><i class="fab fa-github"></i
                   ></a>
                 </div>
@@ -418,11 +455,11 @@
                 </p>
                 <div class="technologies mb-3">
                   <span>React</span><span>Bootstrap</span><span>API</span>
-                </div>
-                <div class="project-links text-center mt-auto">
-                  <a href="#" target="_blank" title="Live Demo"
-                    ><i class="fas fa-globe"></i></a
-                  ><a href="#" target="_blank" title="Source Code"
+                      <img
+                        src="https://placehold.co/400x250/2a2a2a/f0f0f0?text=Project+Image"
+                        class="card-img-top project-image"
+                        alt="Project 3"
+                      />
                     ><i class="fab fa-github"></i
                   ></a>
                 </div>
@@ -597,6 +634,48 @@
         requestAnimationFrame(animate);
       }
       animate();
+    </script>
+    <!-- Lightbox modal -->
+    <div id="lightboxOverlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Image preview">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close preview">&times;</button>
+      <div class="lightbox-content" id="lightboxContent">
+        <img src="" alt="" id="lightboxImage" />
+      </div>
+    </div>
+
+    <script>
+      // Lightbox handlers
+      (function(){
+        const overlay = document.getElementById('lightboxOverlay');
+        const imgEl = document.getElementById('lightboxImage');
+        const closeBtn = document.getElementById('lightboxClose');
+
+        function openLightbox(src, alt) {
+          imgEl.src = src;
+          imgEl.alt = alt || '';
+          overlay.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+          overlay.classList.remove('open');
+          imgEl.src = '';
+          document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.project-image').forEach(img => {
+          img.style.cursor = 'zoom-in';
+          img.addEventListener('click', () => openLightbox(img.src, img.alt));
+        });
+
+        closeBtn.addEventListener('click', closeLightbox);
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeLightbox();
+        });
+      })();
     </script>
   </body>
 </html>
