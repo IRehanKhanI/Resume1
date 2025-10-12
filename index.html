@@ -635,37 +635,64 @@
       }
       animate();
     </script>
-    <!-- Lightbox modal -->
     <div id="lightboxOverlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Image preview">
       <button class="lightbox-close" id="lightboxClose" aria-label="Close preview">&times;</button>
-      <div class="lightbox-content" id="lightboxContent">
-        <img src="" alt="" id="lightboxImage" />
-      </div>
+      <div class="lightbox-content" id="lightboxContent"></div>
     </div>
 
     <script>
-      // Lightbox handlers
       (function(){
         const overlay = document.getElementById('lightboxOverlay');
-        const imgEl = document.getElementById('lightboxImage');
+        const content = document.getElementById('lightboxContent');
         const closeBtn = document.getElementById('lightboxClose');
+        let currentImage = null;
+        let originalParent = null;
+        let originalNextSibling = null;
 
-        function openLightbox(src, alt) {
-          imgEl.src = src;
-          imgEl.alt = alt || '';
+        function openLightbox(img) {
+          // save original position
+          originalParent = img.parentNode;
+          originalNextSibling = img.nextSibling;
+          currentImage = img;
+
+          // style and move
+          img.style.width = '100%';
+          img.style.height = 'auto';
+          img.style.cursor = 'zoom-out';
+          content.appendChild(img);
           overlay.classList.add('open');
           document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
+          if (!currentImage) return;
+          // restore image to original place
+          if (originalNextSibling) originalParent.insertBefore(currentImage, originalNextSibling);
+          else originalParent.appendChild(currentImage);
+
+          // cleanup styles
+          currentImage.style.cursor = '';
+          currentImage.style.width = '';
+          currentImage.style.height = '';
+
+          currentImage = null;
+          originalParent = null;
+          originalNextSibling = null;
+
           overlay.classList.remove('open');
-          imgEl.src = '';
           document.body.style.overflow = '';
         }
 
         document.querySelectorAll('.project-image').forEach(img => {
           img.style.cursor = 'zoom-in';
-          img.addEventListener('click', () => openLightbox(img.src, img.alt));
+          img.addEventListener('click', () => {
+            // If image is already in lightbox, close it
+            if (currentImage === img) {
+              closeLightbox();
+            } else {
+              openLightbox(img);
+            }
+          });
         });
 
         closeBtn.addEventListener('click', closeLightbox);
