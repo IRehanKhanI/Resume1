@@ -16,315 +16,11 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
-
+    <link rel="stylesheet" href="index.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-
-    <style>
-      :root {
-        --primary-color-start: #00aaff;
-        --primary-color-end: #aa00ff;
-        --dark-bg: #121212;
-        --secondary-bg: #1e1e1e;
-        --card-bg: #2a2a2a;
-        --text-color: #f0f0f0;
-        --secondary-text-color: #a0a0a0;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: var(--dark-bg);
-        color: var(--text-color);
-      }
-
-      .hidden {
-        opacity: 0;
-        filter: blur(5px);
-        transform: translateY(20px);
-        transition: all 0.7s ease-out;
-      }
-
-      .show {
-        opacity: 1;
-        filter: blur(0);
-        transform: translateY(0);
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .navbar {
-        background-color: rgba(30, 30, 30, 0.7);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid #333;
-      }
-
-      .delay-100 {
-        transition-delay: 100ms;
-      }
-      .delay-200 {
-        transition-delay: 200ms;
-      }
-      .delay-300 {
-        transition-delay: 300ms;
-      }
-
-      .navbar-brand {
-        font-weight: 600;
-      }
-
-      #home .home-content {
-        z-index: 2;
-        position: relative;
-      }
-
-      #about .about-lead {
-        max-width: 800px;
-        margin: 0 auto;
-        color: var(--secondary-text-color);
-      }
-
-      #skills {
-        background-color: var(--secondary-bg);
-      }
-
-      .contact-email {
-        font-size: 1.5rem;
-        text-decoration: none;
-      }
-
-      .section {
-        padding: 100px 0;
-        overflow: hidden;
-      }
-
-      .section-title {
-        text-align: center;
-        margin-bottom: 60px;
-        font-weight: 700;
-        font-size: 2.5rem;
-        color: transparent;
-        background: linear-gradient(
-          90deg,
-          var(--primary-color-start),
-          var(--primary-color-end)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-      }
-
-      #home {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        position: relative;
-        z-index: 1;
-      }
-
-      #constellation-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-      }
-
-      #home h1 {
-        font-size: 3.8rem;
-        font-weight: 700;
-        animation: fadeIn 1s ease-in-out;
-      }
-
-      #home .headline {
-        font-size: 1.5rem;
-        color: var(--secondary-text-color);
-        margin-top: 15px;
-        min-height: 2.2rem;
-      }
-
-      .typed-cursor {
-        color: var(--primary-color-start);
-      }
-
-      .btn-primary {
-        background: linear-gradient(
-          90deg,
-          var(--primary-color-start),
-          var(--primary-color-end)
-        );
-        border: none;
-        padding: 14px 28px;
-        font-weight: 600;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        animation: fadeIn 1.5s ease-in-out;
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 10px 20px rgba(0, 170, 255, 0.2);
-      }
-
-      .skill-badge {
-        background-color: var(--secondary-bg);
-        color: var(--text-color);
-        padding: 12px 22px;
-        margin: 8px;
-        border-radius: 8px;
-        display: inline-block;
-        font-weight: 500;
-        border: 1px solid #444;
-        transition: all 0.3s ease;
-      }
-      .skill-badge:hover {
-        background: linear-gradient(
-          90deg,
-          var(--primary-color-start),
-          var(--primary-color-end)
-        );
-        color: #fff;
-        transform: scale(1.1);
-        border-color: var(--primary-color-start);
-      }
-
-      .project-card {
-        background-color: var(--card-bg);
-        border: 1px solid #444;
-        border-radius: 12px;
-        transition: transform 0.3s, box-shadow 0.3s;
-        overflow: hidden;
-      }
-
-      /* ensure project cards match image width and remain responsive */
-      .project-card {
-        width: 100%;
-        max-width: 1500px; /* prevents overly wide cards on very large screens */
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .project-card .card-img-top {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        display: block;
-      }
-
-      /* ensure row wraps and shows up to 3 columns on large screens */
-      @media (min-width: 992px) {
-        /* lg */
-        .row.g-4 {
-          justify-content: center;
-        }
-        .col-lg-4 {
-          flex: 0 0 auto;
-        }
-      }
-
-      .project-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-      }
-
-      .project-card .card-title {
-        color: var(--primary-color-start);
-      }
-
-      .project-card .technologies span {
-        font-size: 0.8rem;
-        background-color: #444;
-        padding: 4px 8px;
-        border-radius: 4px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        display: inline-block;
-      }
-
-      .project-links a {
-        color: var(--text-color);
-        margin: 0 10px;
-        font-size: 1.5rem;
-        transition: color 0.3s;
-      }
-
-      .project-links a:hover {
-        color: var(--primary-color-start);
-      }
-
-      #contact .social-icons a {
-        color: var(--secondary-text-color);
-        font-size: 2.8rem;
-        margin: 0 20px;
-        transition: color 0.3s, transform 0.3s;
-      }
-      #contact .social-icons a:hover {
-        color: transparent;
-        background: linear-gradient(
-          90deg,
-          var(--primary-color-start),
-          var(--primary-color-end)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        transform: scale(1.2) rotate(5deg);
-      }
-
-      footer {
-        background-color: var(--secondary-bg);
-        border-top: 1px solid #333;
-      }
-
-      /* lightbox modal styles */
-      .lightbox-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.85);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
-        padding: 2rem;
-      }
-      .lightbox-overlay.open {
-        display: flex;
-      }
-      .lightbox-content {
-        max-width: 1200px;
-        width: 100%;
-        max-height: 90vh;
-        overflow: auto;
-        border-radius: 8px;
-      }
-      .lightbox-content img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-      .lightbox-close {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        color: #fff;
-        font-size: 2rem;
-        cursor: pointer;
-        z-index: 2100;
-      }
-    </style>
   </head>
   <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80">
     <canvas id="constellation-canvas"></canvas>
@@ -411,42 +107,15 @@
 
     <section id="projects" class="section hidden">
       <div class="container">
-        <h2 class="section-title">Projects</h2>
-        <div class="row g-4 justify-content-center">
-          <div class="col-md-6 col-lg-4 hidden delay-100">
-            <div class="card project-card h-100">
-              <img
-                src="assets/images/MindWellGarden.png"
-                class="card-img-top project-image"
-                alt="MindWellGarden project screenshot"
-              />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Mind Well Garden</h5>
-                <p class="card-text text-secondary flex-grow-1">
-                  MindWell Garden is a gamified mental wellness platform
+        <div class="card">
+          <div class="cardImg"><img  src="/assets/images1/MindWellGarden.png" alt="" /></div>
+          
+          <div class="cardDescription"> <p>MindWell Garden is a gamified mental wellness platform
                   designed to help users proactively manage their well-being by
-                  tracking their mood and completing daily challenges. It
-                  motivates consistent engagement through points, streaks, and
-                  achievements, offering a structured way to build healthy
-                  habits like journaling and meditation. The application also
-                  provides prominent and easy access to crucial crisis support
-                  and emergency contacts for immediate help.
-                </p>
-                <div class="technologies mb-3">
-                  <span>Django</span><span>React</span><span>MySQL</span>
-                </div>
-                <div class="project-links text-center mt-auto">
-                  <a href="#" target="_blank" title="Live Demo" class="mx-auto"
-                    ><i class="fas fa-globe"></i
-                  ></a>
-                  <a href="#" target="_blank" title="Source Code"
-                    ><i class="fab fa-github"></i
-                  ></a>
-                </div>
-              </div>
-            </div>
-          </div>
+                  tracking their mood and completing daily challenges.</p>
+                </p></div>
         </div>
+        
       </div>
     </section>
 
@@ -486,135 +155,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
-    <script>
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-          }
-        });
-      });
-      const hiddenElements = document.querySelectorAll(".hidden");
-      hiddenElements.forEach((el) => observer.observe(el));
-
-      var options = {
-        strings: [
-          "Full-Stack Developer",
-          "Python & Django Expert",
-          "React Enthusiast",
-        ],
-        typeSpeed: 50,
-        backSpeed: 25,
-        loop: true,
-        cursorChar: "_",
-      };
-      var typed = new Typed("#typed-headline", options);
-
-      const canvas = document.getElementById("constellation-canvas");
-      const ctx = canvas.getContext("2d");
-      let particles = [];
-      let mouse = { x: null, y: null };
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
-
-      canvas.addEventListener("mousemove", (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      });
-      canvas.addEventListener("mouseleave", () => {
-        mouse.x = null;
-        mouse.y = null;
-      });
-
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 2 + 1;
-          this.speedX = Math.random() * 2 - 1;
-          this.speedY = Math.random() * 2 - 1;
-          this.color = getComputedStyle(document.documentElement)
-            .getPropertyValue("--primary-color-start")
-            .trim();
-        }
-        update() {
-          if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-          if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
-          this.x += this.speedX;
-          this.y += this.speedY;
-        }
-        draw() {
-          ctx.fillStyle = this.color;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      function init() {
-        particles = [];
-        let numberOfParticles = (canvas.height * canvas.width) / 9000;
-        for (let i = 0; i < numberOfParticles; i++) {
-          particles.push(new Particle());
-        }
-      }
-      init();
-      window.addEventListener("resize", init);
-
-      function connect() {
-        let opacityValue = 1;
-        for (let a = 0; a < particles.length; a++) {
-          for (let b = a; b < particles.length; b++) {
-            let distance =
-              (particles[a].x - particles[b].x) *
-                (particles[a].x - particles[b].x) +
-              (particles[a].y - particles[b].y) *
-                (particles[a].y - particles[b].y);
-            if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-              opacityValue = 1 - distance / 20000;
-              ctx.strokeStyle = `rgba(0,170,255,${opacityValue})`;
-              ctx.lineWidth = 1;
-              ctx.beginPath();
-              ctx.moveTo(particles[a].x, particles[a].y);
-              ctx.lineTo(particles[b].x, particles[b].y);
-              ctx.stroke();
-            }
-          }
-        }
-        if (mouse.x !== null && mouse.y !== null) {
-          for (let i = 0; i < particles.length; i++) {
-            let distance =
-              (particles[i].x - mouse.x) * (particles[i].x - mouse.x) +
-              (particles[i].y - mouse.y) * (particles[i].y - mouse.y);
-            if (distance < (canvas.width / 8) * (canvas.height / 8)) {
-              opacityValue = 1 - distance / 15000;
-              ctx.strokeStyle = `rgba(170,0,255,${opacityValue})`;
-              ctx.lineWidth = 1;
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(mouse.x, mouse.y);
-              ctx.stroke();
-            }
-          }
-        }
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
-        }
-        connect();
-        requestAnimationFrame(animate);
-      }
-      animate();
-    </script>
     <div
       id="lightboxOverlay"
       class="lightbox-overlay"
@@ -629,73 +169,24 @@
       >
         &times;
       </button>
+      <button
+        class="lightbox-nav lightbox-prev"
+        id="lightboxPrev"
+        aria-label="Previous image"
+        title="Previous image"
+      >
+        &#8249;
+      </button>
+      <button
+        class="lightbox-nav lightbox-next"
+        id="lightboxNext"
+        aria-label="Next image"
+        title="Next image"
+      >
+        &#8250;
+      </button>
       <div class="lightbox-content" id="lightboxContent"></div>
     </div>
-
-    <script>
-      (function () {
-        const overlay = document.getElementById("lightboxOverlay");
-        const content = document.getElementById("lightboxContent");
-        const closeBtn = document.getElementById("lightboxClose");
-        let currentImage = null;
-        let originalParent = null;
-        let originalNextSibling = null;
-
-        function openLightbox(img) {
-          // save original position
-          originalParent = img.parentNode;
-          originalNextSibling = img.nextSibling;
-          currentImage = img;
-
-          // style and move
-          img.style.width = "100%";
-          img.style.height = "auto";
-          img.style.cursor = "zoom-out";
-          content.appendChild(img);
-          overlay.classList.add("open");
-          document.body.style.overflow = "hidden";
-        }
-
-        function closeLightbox() {
-          if (!currentImage) return;
-          // restore image to original place
-          if (originalNextSibling)
-            originalParent.insertBefore(currentImage, originalNextSibling);
-          else originalParent.appendChild(currentImage);
-
-          // cleanup styles
-          currentImage.style.cursor = "";
-          currentImage.style.width = "";
-          currentImage.style.height = "";
-
-          currentImage = null;
-          originalParent = null;
-          originalNextSibling = null;
-
-          overlay.classList.remove("open");
-          document.body.style.overflow = "";
-        }
-
-        document.querySelectorAll(".project-image").forEach((img) => {
-          img.style.cursor = "zoom-in";
-          img.addEventListener("click", () => {
-            // If image is already in lightbox, close it
-            if (currentImage === img) {
-              closeLightbox();
-            } else {
-              openLightbox(img);
-            }
-          });
-        });
-
-        closeBtn.addEventListener("click", closeLightbox);
-        overlay.addEventListener("click", (e) => {
-          if (e.target === overlay) closeLightbox();
-        });
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeLightbox();
-        });
-      })();
-    </script>
+    <script src="index.js"></script>
   </body>
 </html>
