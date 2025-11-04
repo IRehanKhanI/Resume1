@@ -265,12 +265,14 @@ footer {
 .lightbox-next {
   right: 1rem;
 }
-.container {
+.containerCards {
   display: flex;
   flex-direction: row;
+  justify-items: center;
+  align-items: center;
 }
 .card {
-  width: 33%;
+  width: auto;
   display: flex;
   flex-direction: column;
   margin: 20px;

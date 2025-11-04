@@ -157,32 +157,71 @@ function startCardSlideshow(imgEl, images, ms = 3000) {
 }
 
 // Default slides for cards — edit these URLs to match your actual image files
-const defaultCardSlides = [
-  "/assets/images1/MindWellGarden.png",
-  "/assets/images1/MindWellGarden2.png",
-  "/assets/images1/MindWellGarden3.png",
-  "/assets/images1/MindWellGarden4.png",
-  "/assets/images1/MindWellGarden5.png",
-  "/assets/images1/MindWellGarden6.png",
-  "/assets/images1/MindWellGarden7.png",
-  "/assets/images1/MindWellGarden8.png",
+const MindWell = [
+  "/assets/MindWell/MindWellGarden.png",
+  "/assets/MindWell/MindWellGarden2.png",
+  "/assets/MindWell/MindWellGarden3.png",
+  "/assets/MindWell/MindWellGarden4.png",
+  "/assets/MindWell/MindWellGarden5.png",
+  "/assets/MindWell/MindWellGarden6.png",
+  "/assets/MindWell/MindWellGarden7.png",
+  "/assets/MindWell/MindWellGarden8.png",
 ];
-
-// Attach slideshow to each card image. If an <img> has a data-images attribute
-// it should be a comma-separated list of URLs and will override the defaults.
-document.querySelectorAll(".cardImg img").forEach((img) => {
-  let list = defaultCardSlides;
+const Rentify = [
+  // assets\Rentify\Rentfy (4).png
+  //   /assets/Rentify/Rentfy (1).png
+  "/assets/Rentify/Rentfy (1).png",
+  "/assets/Rentify/Rentfy (2).png",
+  "/assets/Rentify/Rentfy (3).png",
+  "/assets/Rentify/Rentfy (4).png",
+  "/assets/Rentify/Rentfy (5).png",
+  "/assets/Rentify/Rentfy (6).png",
+  "/assets/Rentify/Rentfy (7).png",
+  "/assets/Rentify/Rentfy (8).png",
+  "/assets/Rentify/Rentfy (9).png",
+  "/assets/Rentify/Rentfy (10).png",
+  "/assets/Rentify/Rentfy (11).png",
+  "/assets/Rentify/Rentfy (12).png",
+  "/assets/Rentify/Rentfy (13).png",
+  "/assets/Rentify/Rentfy (14).png",
+  "/assets/Rentify/Rentfy (15).png",
+  "/assets/Rentify/Rentfy (16).png",
+  "/assets/Rentify/Rentfy (17).png",
+  "/assets/Rentify/Rentfy (18).png",
+  "/assets/Rentify/Rentfy (19).png",
+];
+// Utility: pick gallery list for a given image
+function getGalleryList(img) {
+  // 1) data-images override
   const attr = img.getAttribute("data-images");
   if (attr) {
-    // parse comma-separated list and trim values
     const parsed = attr
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean);
-    if (parsed.length) list = parsed;
+    if (parsed.length) return parsed;
   }
-  // start slideshow with a 3s default interval
-  startCardSlideshow(img, list, 3000);
+  // 2) data-gallery hint
+  const g = (img.getAttribute("data-gallery") || "").toLowerCase();
+  if (g === "mindwell") return MindWell;
+  if (g === "rentify") return Rentify;
+
+  // 3) infer from id/src
+  const id = (img.id || "").toLowerCase();
+  const src = (img.getAttribute("src") || "").toLowerCase();
+  if (id.includes("mindwell") || src.includes("mindwell")) return MindWell;
+  if (id.includes("rentify") || src.includes("rentify")) return Rentify;
+
+  // 4) fallback: no gallery
+  return [];
+}
+
+// Attach slideshow to each card image.
+document.querySelectorAll(".cardImg img").forEach((img) => {
+  const list = getGalleryList(img);
+  if (list && list.length > 1) {
+    startCardSlideshow(img, list, 3000);
+  }
 });
 
 // Lightbox overlay with left/right navigation
@@ -212,6 +251,41 @@ document.querySelectorAll(".cardImg img").forEach((img) => {
     const end = p.split("/").pop();
     i = list.findIndex((u) => toPathname(u).endsWith(end || ""));
     return i === -1 ? 0 : i;
+  }
+
+  // Determine starting index using img dataset/index/id, falling back to src
+  function getStartIndex(list, img) {
+    // 1) Explicit data-index takes precedence
+    const di = img.getAttribute("data-index");
+    if (di !== null && di !== undefined && di !== "") {
+      const n = parseInt(di, 10);
+      if (!Number.isNaN(n) && list.length)
+        return ((n % list.length) + list.length) % list.length;
+    }
+    // 2) If id ends with a number (e.g., image3), use that (1-based -> 0-based)
+    if (img.id) {
+      const m = img.id.match(/(\d+)\s*$/);
+      if (m && list.length) {
+        const n = parseInt(m[1], 10) - 1;
+        if (!Number.isNaN(n))
+          return ((n % list.length) + list.length) % list.length;
+      }
+    }
+    // 3) If id matches a filename base in the list, use that
+    if (img.id) {
+      const target = img.id.toLowerCase();
+      const idx = list.findIndex((u) => {
+        const base = toPathname(u)
+          .split("/")
+          .pop()
+          .replace(/\.[^.]+$/, "")
+          .toLowerCase();
+        return base === target;
+      });
+      if (idx !== -1) return idx;
+    }
+    // 4) Fallback to matching current src
+    return findIndexBySrc(list, img.src || list[0]);
   }
 
   function showAt(index) {
@@ -248,16 +322,8 @@ document.querySelectorAll(".cardImg img").forEach((img) => {
   document.querySelectorAll(".cardImg img").forEach((img) => {
     img.style.cursor = "zoom-in";
     img.addEventListener("click", () => {
-      let list = defaultCardSlides;
-      const attr = img.getAttribute("data-images");
-      if (attr) {
-        const parsed = attr
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
-        if (parsed.length) list = parsed;
-      }
-      const idx = findIndexBySrc(list, img.src || list[0]);
+      const list = getGalleryList(img);
+      const idx = getStartIndex(list, img);
       openOverlay(list, idx);
     });
   });
@@ -276,4 +342,90 @@ document.querySelectorAll(".cardImg img").forEach((img) => {
     if (e.key === "ArrowLeft") showAt(currentIndex - 1);
     if (e.key === "ArrowRight") showAt(currentIndex + 1);
   });
+
+  // Zoom & Pan inside overlay
+  let zoom = 1;
+  let panX = 0;
+  let panY = 0;
+  let dragging = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let panStartX = 0;
+  let panStartY = 0;
+
+  function applyTransform() {
+    if (!overlayImg) return;
+    overlayImg.style.transformOrigin = "0 0";
+    overlayImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+    overlayImg.style.cursor =
+      zoom > 1 ? (dragging ? "grabbing" : "grab") : "zoom-in";
+  }
+
+  function resetZoom() {
+    zoom = 1;
+    panX = 0;
+    panY = 0;
+    applyTransform();
+  }
+
+  // Adjust zoom keeping mouse position stable (approximate)
+  function handleWheel(e) {
+    if (!overlayImg) return;
+    if (!e.ctrlKey) return; // only zoom when Ctrl + wheel
+    e.preventDefault();
+    const rect = overlayImg.getBoundingClientRect();
+    const prevZoom = zoom;
+    const delta = -e.deltaY * 0.0015; // sensitivity
+    zoom = Math.min(4, Math.max(1, zoom + delta));
+    if (zoom !== prevZoom) {
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      panX -= mx / prevZoom - mx / zoom;
+      panY -= my / prevZoom - my / zoom;
+      applyTransform();
+    }
+  }
+
+  function handleMouseDown(e) {
+    if (!overlayImg || zoom <= 1) return;
+    dragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    panStartX = panX;
+    panStartY = panY;
+    applyTransform();
+  }
+  function handleMouseMove(e) {
+    if (!dragging) return;
+    panX = panStartX + (e.clientX - dragStartX);
+    panY = panStartY + (e.clientY - dragStartY);
+    applyTransform();
+  }
+  function handleMouseUp() {
+    if (!dragging) return;
+    dragging = false;
+    applyTransform();
+  }
+
+  // Hook events when overlay opens
+  const origOpenOverlay = openOverlay;
+  openOverlay = function (list, startIndex) {
+    origOpenOverlay(list, startIndex);
+    // reset zoom state
+    resetZoom();
+    content.addEventListener("wheel", handleWheel, { passive: false });
+    overlayImg.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
+
+  // Cleanup when closing
+  const origCloseOverlay = closeOverlay;
+  closeOverlay = function () {
+    content.removeEventListener("wheel", handleWheel);
+    overlayImg && overlayImg.removeEventListener("mousedown", handleMouseDown);
+    window.removeEventListener("mousemove", handleMouseMove);
+    window.removeEventListener("mouseup", handleMouseUp);
+    origCloseOverlay();
+  };
 })();
