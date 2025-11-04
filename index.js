@@ -216,13 +216,53 @@ function getGalleryList(img) {
   return [];
 }
 
-// Attach slideshow to each card image.
-document.querySelectorAll(".cardImg img").forEach((img) => {
-  const list = getGalleryList(img);
-  if (list && list.length > 1) {
-    startCardSlideshow(img, list, 3000);
-  }
-});
+// Build Bootstrap carousels for each project image container for smoother transitions
+function buildProjectCarousels() {
+  let counter = 0;
+  document.querySelectorAll(".cardImg").forEach((container) => {
+    const placeholder = container.querySelector("img");
+    if (!placeholder) return;
+    const list = getGalleryList(placeholder);
+    if (!list || list.length === 0) return; // keep as-is if no gallery list
+
+    counter += 1;
+    const carouselId = `project-carousel-${counter}`;
+
+    // Guess gallery hint to keep overlay list detection robust
+    const hint = (() => {
+      const g = (placeholder.getAttribute("data-gallery") || "").toLowerCase();
+      if (g) return g;
+      const src = (placeholder.getAttribute("src") || "").toLowerCase();
+      if (src.includes("mindwell")) return "mindwell";
+      if (src.includes("rentify")) return "rentify";
+      const first = (list[0] || "").toLowerCase();
+      if (first.includes("mindwell")) return "mindwell";
+      if (first.includes("rentify")) return "rentify";
+      return "";
+    })();
+
+    const slides = list
+      .map((src, i) => {
+        const safeAlt = placeholder.getAttribute("alt") || `Slide ${i + 1}`;
+        return `\n<div class="carousel-item${
+          i === 0 ? " active" : ""
+        }">\n  <img src="${src}" class="d-block w-100" alt="${safeAlt}"${
+          hint ? ` data-gallery="${hint}"` : ""
+        } />\n</div>`;
+      })
+      .join("");
+
+    const controls =
+      list.length > 1
+        ? `\n<button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">\n  <span class="carousel-control-prev-icon" aria-hidden="true"></span>\n  <span class="visually-hidden">Previous</span>\n</button>\n<button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">\n  <span class="carousel-control-next-icon" aria-hidden="true"></span>\n  <span class="visually-hidden">Next</span>\n</button>`
+        : "";
+
+    container.innerHTML = `\n<div id="${carouselId}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="hover">\n  <div class="carousel-inner">${slides}\n  </div>${controls}\n</div>`;
+  });
+}
+
+// Initialize carousels (replaces the previous manual slideshow)
+buildProjectCarousels();
 
 // Lightbox overlay with left/right navigation
 (function () {
